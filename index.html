@@ -1,0 +1,1111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Versa Digital - Intake Automation for Independent Dental Clinics</title>
+  <meta name="description" content="We build automated intake systems for independent dental clinics - so every enquiry gets captured, organised and responded to instantly. Even at midnight.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ── Reset & tokens ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --dark: #0A0A0A;
+      --light: #F8F8F8;
+      --text-dark: #F0F0F0;
+      --text-light: #1A1A1A;
+      --muted: #888888;
+      --gold: #C9A84C;
+      --gold-hover: #B8933B;
+      --border-dark: rgba(255,255,255,0.08);
+      --border-light: rgba(0,0,0,0.08);
+      --max-w: 1100px;
+      --section-pad: 120px;
+      --section-pad-mob: 60px;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      font-size: 16px;
+      line-height: 1.7;
+      font-weight: 400;
+      background: var(--dark);
+      color: var(--text-dark);
+      -webkit-font-smoothing: antialiased;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+
+    /* ── Utility ── */
+    .wrap { max-width: var(--max-w); margin: 0 auto; padding: 0 40px; }
+    .section-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--gold);
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    /* ── Fade-up animation ── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .fade-up.delay-1 { transition-delay: 0.1s; }
+    .fade-up.delay-2 { transition-delay: 0.2s; }
+    .fade-up.delay-3 { transition-delay: 0.3s; }
+    .fade-up.delay-4 { transition-delay: 0.4s; }
+    .fade-up.delay-5 { transition-delay: 0.5s; }
+    .fade-up.delay-6 { transition-delay: 0.6s; }
+
+    /* ── NAV ── */
+    #nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(10,10,10,0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-dark);
+      transition: padding 0.3s ease;
+    }
+    #nav.scrolled { padding: 0; }
+    .nav-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 40px;
+      height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: height 0.3s ease;
+    }
+    #nav.scrolled .nav-inner { height: 70px; }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
+      letter-spacing: 0.08em;
+      color: var(--text-dark);
+      line-height: 1;
+      cursor: pointer;
+    }
+    .nav-logo .logo-versa { font-weight: 500; }
+    .nav-logo .logo-digital { font-weight: 300; }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 13px;
+      font-weight: 400;
+      color: rgba(240,240,240,0.7);
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text-dark); }
+    .nav-cta {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--gold);
+      border: 1px solid var(--gold);
+      padding: 8px 20px;
+      border-radius: 3px;
+      transition: background 0.2s, color 0.2s;
+      white-space: nowrap;
+    }
+    .nav-cta:hover { background: var(--gold); color: #0A0A0A; }
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+      background: none;
+      border: none;
+    }
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 1.5px;
+      background: var(--text-dark);
+      transition: all 0.3s ease;
+    }
+    /* Mobile nav overlay */
+    #mobileNav {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: var(--dark);
+      z-index: 99;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+    }
+    #mobileNav.open { display: flex; }
+    #mobileNav a {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 32px;
+      font-weight: 300;
+      color: var(--text-dark);
+      letter-spacing: 0.04em;
+      transition: color 0.2s;
+    }
+    #mobileNav a:hover { color: var(--gold); }
+    #mobileNav .close-btn {
+      position: absolute;
+      top: 24px;
+      right: 40px;
+      font-size: 28px;
+      background: none;
+      border: none;
+      color: var(--text-dark);
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      line-height: 1;
+    }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      background: var(--dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 140px 40px 100px;
+      position: relative;
+    }
+    .hero-label { margin-bottom: 28px; }
+    .hero-headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(42px, 6vw, 78px);
+      font-weight: 300;
+      line-height: 1.12;
+      letter-spacing: -0.01em;
+      color: var(--text-dark);
+      max-width: 860px;
+      margin-bottom: 28px;
+    }
+    .hero-sub {
+      font-size: 18px;
+      font-weight: 300;
+      color: var(--muted);
+      max-width: 580px;
+      line-height: 1.7;
+      margin-bottom: 44px;
+    }
+    .btn-gold {
+      display: inline-block;
+      background: var(--gold);
+      color: #0A0A0A;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      padding: 16px 36px;
+      border-radius: 3px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, box-shadow 0.2s;
+    }
+    .btn-gold:hover {
+      background: var(--gold-hover);
+      box-shadow: 0 0 28px rgba(201,168,76,0.25);
+    }
+    .hero-small {
+      margin-top: 18px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .scroll-indicator {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: rgba(255,255,255,0.2);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .scroll-indicator::after {
+      content: '';
+      display: block;
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, rgba(201,168,76,0.4), transparent);
+      animation: scrollLine 1.8s ease-in-out infinite;
+    }
+    @keyframes scrollLine {
+      0%, 100% { opacity: 0.3; transform: scaleY(0.8); }
+      50% { opacity: 1; transform: scaleY(1); }
+    }
+
+    /* ── PROBLEM ── */
+    #problem {
+      background: var(--light);
+      color: var(--text-light);
+      padding: var(--section-pad) 0;
+    }
+    .problem-headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 300;
+      line-height: 1.2;
+      color: var(--text-light);
+      max-width: 640px;
+      margin-bottom: 24px;
+    }
+    .problem-body {
+      font-size: 16px;
+      color: #555;
+      max-width: 600px;
+      margin-bottom: 60px;
+      line-height: 1.8;
+    }
+    .problem-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .problem-card {
+      background: #fff;
+      border: 1px solid var(--border-light);
+      border-radius: 8px;
+      padding: 32px 28px;
+    }
+    .card-dash {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      font-weight: 300;
+      color: var(--gold);
+      margin-bottom: 16px;
+      line-height: 1;
+    }
+    .card-title {
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-light);
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+    .card-body {
+      font-size: 14px;
+      color: #666;
+      line-height: 1.7;
+    }
+
+    /* ── OBSERVATION ── */
+    #observation {
+      background: var(--dark);
+      color: var(--text-dark);
+      padding: var(--section-pad) 0;
+      text-align: center;
+    }
+    .obs-inner {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .obs-headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(28px, 3.5vw, 46px);
+      font-weight: 300;
+      line-height: 1.2;
+      margin-bottom: 24px;
+    }
+    .obs-body {
+      font-size: 16px;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    /* ── SOLUTION ── */
+    #solution {
+      background: var(--light);
+      color: var(--text-light);
+      padding: var(--section-pad) 0;
+    }
+    .solution-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .solution-headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(28px, 3.5vw, 46px);
+      font-weight: 300;
+      line-height: 1.2;
+      color: var(--text-light);
+      margin-bottom: 24px;
+    }
+    .solution-body {
+      font-size: 16px;
+      color: #555;
+      line-height: 1.8;
+    }
+    /* Flow diagram */
+    .flow-diagram {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .flow-node {
+      background: #fff;
+      border: 1px solid var(--border-light);
+      border-radius: 6px;
+      padding: 18px 24px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-light);
+      letter-spacing: 0.04em;
+      text-align: center;
+    }
+    .flow-node.accent {
+      background: var(--dark);
+      border-color: var(--gold);
+      color: var(--text-dark);
+    }
+    .flow-node.accent .flow-node-sub { color: rgba(240,240,240,0.5); }
+    .flow-node-label {
+      font-size: 10px;
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--gold);
+      margin-bottom: 4px;
+    }
+    .flow-node-title { font-size: 14px; font-weight: 500; }
+    .flow-node-sub { font-size: 12px; color: #888; margin-top: 3px; font-weight: 400; }
+    .flow-connector {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 0;
+    }
+    .flow-connector::after {
+      content: '';
+      display: block;
+      width: 1px;
+      height: 28px;
+      background: linear-gradient(to bottom, var(--gold), rgba(201,168,76,0.2));
+    }
+    .flow-arrow {
+      font-size: 12px;
+      color: var(--gold);
+      margin-top: -4px;
+    }
+
+    /* ── HOW IT WORKS ── */
+    #how {
+      background: var(--dark);
+      color: var(--text-dark);
+      padding: var(--section-pad) 0;
+    }
+    .how-header {
+      text-align: center;
+      margin-bottom: 72px;
+    }
+    .how-headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(28px, 3.5vw, 46px);
+      font-weight: 300;
+      line-height: 1.2;
+    }
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      position: relative;
+    }
+    .steps::before {
+      content: '';
+      position: absolute;
+      top: 22px;
+      left: calc(12.5% + 12px);
+      right: calc(12.5% + 12px);
+      height: 1px;
+      background: linear-gradient(to right, var(--gold), rgba(201,168,76,0.15), rgba(201,168,76,0.15), var(--gold));
+    }
+    .step {
+      padding: 0 24px;
+      text-align: center;
+    }
+    .step-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 40px;
+      font-weight: 300;
+      color: var(--gold);
+      line-height: 1;
+      margin-bottom: 20px;
+      position: relative;
+      display: inline-block;
+      width: 46px;
+      height: 46px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+      background: var(--dark);
+      z-index: 1;
+    }
+    .step-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-dark);
+      margin-bottom: 12px;
+      letter-spacing: 0.02em;
+    }
+    .step-body {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* ── WHAT YOU GET ── */
+    #get {
+      background: var(--light);
+      color: var(--text-light);
+      padding: var(--section-pad) 0;
+    }
+    .get-header {
+      margin-bottom: 56px;
+    }
+    .get-headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(28px, 3.5vw, 46px);
+      font-weight: 300;
+      line-height: 1.2;
+      color: var(--text-light);
+    }
+    .get-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .get-card {
+      background: #fff;
+      border: 1px solid var(--border-light);
+      border-radius: 8px;
+      padding: 28px 24px;
+    }
+    .get-check {
+      color: var(--gold);
+      font-size: 18px;
+      margin-bottom: 14px;
+      font-weight: 300;
+    }
+    .get-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-light);
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+    .get-body {
+      font-size: 13px;
+      color: #666;
+      line-height: 1.7;
+    }
+
+    /* ── FOUNDER ── */
+    #founder {
+      background: var(--dark);
+      color: var(--text-dark);
+      padding: var(--section-pad) 0;
+    }
+    .founder-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .founder-headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(28px, 3.5vw, 46px);
+      font-weight: 300;
+      line-height: 1.2;
+      margin-bottom: 28px;
+    }
+    .founder-body {
+      font-size: 16px;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+    .founder-body strong { color: var(--text-dark); font-weight: 500; }
+    .founder-right {
+      border-left: 1px solid var(--border-dark);
+      padding-left: 80px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+    .founder-stat {
+      border-bottom: 1px solid var(--border-dark);
+      padding-bottom: 28px;
+    }
+    .founder-stat:last-child { border-bottom: none; padding-bottom: 0; }
+    .founder-stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 48px;
+      font-weight: 300;
+      color: var(--gold);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .founder-stat-label {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* ── FAQ ── */
+    #faq {
+      background: var(--light);
+      color: var(--text-light);
+      padding: var(--section-pad) 0;
+    }
+    .faq-header { margin-bottom: 56px; }
+    .faq-headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(28px, 3.5vw, 46px);
+      font-weight: 300;
+      line-height: 1.2;
+      color: var(--text-light);
+    }
+    .faq-list { display: flex; flex-direction: column; }
+    .faq-item {
+      border-bottom: 1px solid var(--border-light);
+    }
+    .faq-item:first-child { border-top: 1px solid var(--border-light); }
+    .faq-question {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px 0;
+      cursor: pointer;
+      gap: 20px;
+    }
+    .faq-q-text {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text-light);
+      line-height: 1.4;
+    }
+    .faq-arrow {
+      font-size: 18px;
+      color: var(--gold);
+      flex-shrink: 0;
+      transition: transform 0.3s ease;
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      line-height: 1;
+    }
+    .faq-item.open .faq-arrow { transform: rotate(45deg); }
+    .faq-answer {
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.4s ease;
+    }
+    .faq-answer-inner {
+      padding-bottom: 24px;
+      font-size: 15px;
+      color: #555;
+      line-height: 1.8;
+      max-width: 720px;
+    }
+
+    /* ── FINAL CTA ── */
+    #cta {
+      background: var(--dark);
+      color: var(--text-dark);
+      padding: var(--section-pad) 0 80px;
+      text-align: center;
+    }
+    .cta-headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(34px, 5vw, 64px);
+      font-weight: 300;
+      line-height: 1.15;
+      margin-bottom: 24px;
+    }
+    .cta-sub {
+      font-size: 16px;
+      color: var(--muted);
+      max-width: 540px;
+      margin: 0 auto 44px;
+      line-height: 1.8;
+    }
+    .cta-small {
+      margin-top: 20px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--dark);
+      border-top: 1px solid var(--border-dark);
+      padding: 32px 0;
+    }
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 16px;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      color: var(--text-dark);
+    }
+    .footer-centre {
+      text-align: center;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+    .footer-centre a { color: var(--muted); transition: color 0.2s; }
+    .footer-centre a:hover { color: var(--gold); }
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+    .footer-links a {
+      font-size: 13px;
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--gold); }
+    .footer-copy {
+      width: 100%;
+      text-align: center;
+      font-size: 12px;
+      color: rgba(255,255,255,0.2);
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border-dark);
+    }
+
+    /* ── Logo images ── */
+    .nav-logo-img { height: 80px; width: auto; display: block; }
+    .footer-logo-img { height: 60px; width: auto; opacity: 0.85; display: block; }
+
+    /* ── Mobile ── */
+    @media (max-width: 900px) {
+      .wrap { padding: 0 24px; }
+      :root { --section-pad: var(--section-pad-mob); }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .problem-cards { grid-template-columns: 1fr; }
+      .solution-grid { grid-template-columns: 1fr; gap: 48px; }
+      .steps { grid-template-columns: 1fr 1fr; gap: 48px; }
+      .steps::before { display: none; }
+      .get-grid { grid-template-columns: 1fr; }
+      .founder-grid { grid-template-columns: 1fr; gap: 48px; }
+      .founder-right { border-left: none; padding-left: 0; border-top: 1px solid var(--border-dark); padding-top: 40px; }
+      .footer-inner { flex-direction: column; align-items: flex-start; gap: 16px; }
+      .footer-links { margin-top: 4px; }
+    }
+    @media (max-width: 600px) {
+      .steps { grid-template-columns: 1fr; gap: 40px; }
+      .hero-sub { font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <div class="nav-inner">
+      <div class="nav-logo" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+        <img src="logo.svg" alt="Versa Digital" class="nav-logo-img" style="height:40px;width:220px;object-fit:cover;object-position:center center;">
+      </div>
+      <ul class="nav-links">
+        <li><a href="#how">How It Works</a></li>
+        <li><a href="#get">What You Get</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="https://calendly.com/d/cx98-rw5-pjp/versa-digital-free-consultation" target="_blank" rel="noopener" class="nav-cta">Book a Call</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- MOBILE NAV -->
+  <div id="mobileNav" role="dialog" aria-modal="true" aria-label="Navigation">
+    <button class="close-btn" id="closeNav" aria-label="Close menu">&times;</button>
+    <a href="#how" class="mob-link">How It Works</a>
+    <a href="#get" class="mob-link">What You Get</a>
+    <a href="#faq" class="mob-link">FAQ</a>
+    <a href="https://calendly.com/d/cx98-rw5-pjp/versa-digital-free-consultation" target="_blank" rel="noopener" style="color:var(--gold)">Book a Call</a>
+  </div>
+
+  <!-- HERO -->
+  <section id="hero">
+    <span class="section-label hero-label fade-up">Intake Automation &middot; Independent Dental Clinics</span>
+    <h1 class="hero-headline fade-up delay-1">
+      Most &lsquo;Book Now&rsquo; buttons<br>aren&rsquo;t booking systems.<br>They&rsquo;re callback forms.
+    </h1>
+    <p class="hero-sub fade-up delay-2">
+      We build the automated layer between your website and your team - so every enquiry gets captured, organised and responded to instantly. Even at midnight.
+    </p>
+    <a class="btn-gold fade-up delay-3" href="https://calendly.com/d/cx98-rw5-pjp/versa-digital-free-consultation" target="_blank" rel="noopener">Find Your Enquiry Gap</a>
+    <p class="hero-small fade-up delay-4">Free 20 minute consultation. No obligation.</p>
+    <div class="scroll-indicator">scroll</div>
+  </section>
+
+  <!-- PROBLEM -->
+  <section id="problem">
+    <div class="wrap">
+      <span class="section-label fade-up">The Problem</span>
+      <h2 class="problem-headline fade-up delay-1">Your clinic is losing new patients every night.</h2>
+      <p class="problem-body fade-up delay-2">Not because of poor service. Because of a systems gap. A patient submits an enquiry after hours. No instant response. By morning, they&rsquo;ve booked elsewhere. This isn&rsquo;t a staffing problem &dash; it&rsquo;s a structural one.</p>
+      <div class="problem-cards">
+        <div class="problem-card fade-up delay-1">
+          <div class="card-dash">&dash;</div>
+          <div class="card-title">After-hours enquiries go unanswered</div>
+          <div class="card-body">No automated response means patients move on overnight.</div>
+        </div>
+        <div class="problem-card fade-up delay-2">
+          <div class="card-dash">&dash;</div>
+          <div class="card-title">Manual coordination wastes staff time</div>
+          <div class="card-body">Every booking confirmation is a back-and-forth your team shouldn&rsquo;t be handling.</div>
+        </div>
+        <div class="problem-card fade-up delay-3">
+          <div class="card-dash">&dash;</div>
+          <div class="card-title">Enquiries drop off before converting</div>
+          <div class="card-body">The gap between submission and confirmation is where new patients disappear.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OBSERVATION -->
+  <section id="observation">
+    <div class="wrap">
+      <div class="obs-inner">
+        <span class="section-label fade-up">What We Found</span>
+        <h2 class="obs-headline fade-up delay-1">The pattern is identical across every clinic we&rsquo;ve looked at.</h2>
+        <p class="obs-body fade-up delay-2">Strong reputation. Busy practice. A front door that closes at 6pm. After researching independent dental clinics across the UK, the same gap appears everywhere &dash; enquiries keep coming after hours. The systems don&rsquo;t.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOLUTION -->
+  <section id="solution">
+    <div class="wrap">
+      <div class="solution-grid">
+        <div>
+          <span class="section-label fade-up">The Solution</span>
+          <h2 class="solution-headline fade-up delay-1">A front-end intake layer built for your clinic.</h2>
+          <p class="solution-body fade-up delay-2">We don&rsquo;t replace your practice management software. We sit in front of it &dash; capturing every enquiry the moment it arrives, qualifying it, and routing it automatically. No missed bookings. No manual back-and-forth. No leads falling through the cracks.</p>
+        </div>
+        <div class="fade-up delay-2">
+          <div class="flow-diagram">
+            <div class="flow-node">
+              <div class="flow-node-label">Input</div>
+              <div class="flow-node-title">Patient Enquiry</div>
+              <div class="flow-node-sub">Website form &middot; Contact page &middot; Any hour</div>
+            </div>
+            <div class="flow-connector"><div class="flow-arrow">&#9660;</div></div>
+            <div class="flow-node accent">
+              <div class="flow-node-label">Versa Digital</div>
+              <div class="flow-node-title">Intake Layer</div>
+              <div class="flow-node-sub">Capture &middot; Validate &middot; Route &middot; Confirm</div>
+            </div>
+            <div class="flow-connector"><div class="flow-arrow" style="color:#555">&#9660;</div></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+              <div class="flow-node">
+                <div class="flow-node-label">New patient</div>
+                <div class="flow-node-title">Lead Created</div>
+                <div class="flow-node-sub">Ready for follow-up</div>
+              </div>
+              <div class="flow-node">
+                <div class="flow-node-label">Existing patient</div>
+                <div class="flow-node-title">Booking Created</div>
+                <div class="flow-node-sub">Confirmed instantly</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="how">
+    <div class="wrap">
+      <div class="how-header">
+        <span class="section-label fade-up">How It Works</span>
+        <h2 class="how-headline fade-up delay-1">Simple to set up. Invisible to run.</h2>
+      </div>
+      <div class="steps">
+        <div class="step fade-up delay-1">
+          <div class="step-num">1</div>
+          <div class="step-title">Enquiry arrives</div>
+          <p class="step-body">A new patient submits a request via your website form, WhatsApp, or contact page &dash; at any hour.</p>
+        </div>
+        <div class="step fade-up delay-2">
+          <div class="step-num">2</div>
+          <div class="step-title">System activates</div>
+          <p class="step-body">Every enquiry is captured the moment it arrives &dash; validated, checked against your patient records, and processed automatically.</p>
+        </div>
+        <div class="step fade-up delay-3">
+          <div class="step-num">3</div>
+          <div class="step-title">Routed without intervention</div>
+          <p class="step-body">New patients are logged as leads. Existing patients get a booking created. Everything confirmed &dash; no manual input required.</p>
+        </div>
+        <div class="step fade-up delay-4">
+          <div class="step-num">4</div>
+          <div class="step-title">Your team picks up a clean queue</div>
+          <p class="step-body">When reception arrives in the morning, every overnight enquiry is already organised, categorised and ready to action.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT YOU GET -->
+  <section id="get">
+    <div class="wrap">
+      <div class="get-header">
+        <span class="section-label fade-up">What You Get</span>
+        <h2 class="get-headline fade-up delay-1">Everything your intake process is missing.</h2>
+      </div>
+      <div class="get-grid">
+        <div class="get-card fade-up delay-1">
+          <div class="get-check">&#10003;</div>
+          <div class="get-title">Nothing missed overnight</div>
+          <p class="get-body">Every enquiry that arrives after hours is waiting for you in the morning, organised and ready to action.</p>
+        </div>
+        <div class="get-card fade-up delay-2">
+          <div class="get-check">&#10003;</div>
+          <div class="get-title">No duplicate bookings</div>
+          <p class="get-body">Same patient, same date, same request &dash; caught automatically before it causes confusion.</p>
+        </div>
+        <div class="get-card fade-up delay-3">
+          <div class="get-check">&#10003;</div>
+          <div class="get-title">New and existing patients handled differently</div>
+          <p class="get-body">Unrecognised patients logged as leads instantly. Existing patients booked directly.</p>
+        </div>
+        <div class="get-card fade-up delay-1">
+          <div class="get-check">&#10003;</div>
+          <div class="get-title">Full audit trail</div>
+          <p class="get-body">Every enquiry logged with timestamp, status and outcome. Complete visibility, always.</p>
+        </div>
+        <div class="get-card fade-up delay-2">
+          <div class="get-check">&#10003;</div>
+          <div class="get-title">Every edge case covered</div>
+          <p class="get-body">From invalid submissions to system errors &dash; every scenario handled with explicit responses.</p>
+        </div>
+        <div class="get-card fade-up delay-3">
+          <div class="get-check">&#10003;</div>
+          <div class="get-title">Ongoing monitoring included</div>
+          <p class="get-body">We watch the system so you don&rsquo;t have to. If anything fails, we catch it first.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOUNDER NOTE -->
+  <section id="founder">
+    <div class="wrap">
+      <div class="founder-grid">
+        <div>
+          <span class="section-label fade-up">Who We Are</span>
+          <h2 class="founder-headline fade-up delay-1">Built by someone who noticed the gap.</h2>
+          <p class="founder-body fade-up delay-2">I&rsquo;m <strong>Lawrence</strong>, founder of Versa Digital. I started this after looking at dozens of independent dental clinic websites and noticing the same thing &dash; strong practices with a booking process that quietly loses patients every day.<br><br>We build intake systems that close that gap. No agency overhead, no bloated retainers. Just a system that works, monitored and maintained by someone who built it.</p>
+        </div>
+        <div class="founder-right fade-up delay-2">
+          <div class="founder-stat">
+            <div class="founder-stat-num">100%</div>
+            <div class="founder-stat-label">Focus on independent private clinics</div>
+          </div>
+          <div class="founder-stat">
+            <div class="founder-stat-num">5&ndash;7</div>
+            <div class="founder-stat-label">Working days from onboarding to live</div>
+          </div>
+          <div class="founder-stat">
+            <div class="founder-stat-num">24/7</div>
+            <div class="founder-stat-label">System monitoring, every day</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="wrap">
+      <div class="faq-header">
+        <span class="section-label fade-up">Frequently Asked</span>
+        <h2 class="faq-headline fade-up delay-1">Straight answers.</h2>
+      </div>
+      <div class="faq-list fade-up delay-2">
+
+        <div class="faq-item">
+          <div class="faq-question">
+            <span class="faq-q-text">Do I need to replace my current booking system?</span>
+            <span class="faq-arrow">+</span>
+          </div>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">No. We sit in front of your existing setup &dash; whether that&rsquo;s Dentally, a contact form, or phone booking. Nothing gets replaced.</div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            <span class="faq-q-text">How long does setup take?</span>
+            <span class="faq-arrow">+</span>
+          </div>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">Most clinics are live within 5&ndash;7 working days of onboarding.</div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            <span class="faq-q-text">What does it cost?</span>
+            <span class="faq-arrow">+</span>
+          </div>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">Every clinic is different, so we scope each system individually. Book a free consultation and we&rsquo;ll give you a clear, fixed quote &dash; no surprises.</div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            <span class="faq-q-text">What if something breaks?</span>
+            <span class="faq-arrow">+</span>
+          </div>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">Every system includes ongoing monitoring. If anything fails, we catch it and fix it &dash; before your team notices.</div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            <span class="faq-q-text">Do you work with NHS clinics?</span>
+            <span class="faq-arrow">+</span>
+          </div>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">We currently focus exclusively on private independent dental clinics.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section id="cta">
+    <div class="wrap">
+      <h2 class="cta-headline fade-up">Ready to stop missing enquiries?</h2>
+      <p class="cta-sub fade-up delay-1">Book a free 20 minute consultation. We&rsquo;ll assess your current intake process and tell you exactly what&rsquo;s being missed.</p>
+      <a class="btn-gold fade-up delay-2" href="https://calendly.com/d/cx98-rw5-pjp/versa-digital-free-consultation" target="_blank" rel="noopener">Book Your Free Consultation</a>
+      <p class="cta-small fade-up delay-3">No obligation. No agency jargon. Just a straight conversation.</p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="wrap">
+      <div class="footer-inner">
+        <div class="footer-logo"><img src="logo.svg" alt="Versa Digital" class="footer-logo-img"></div>
+        <div class="footer-centre">
+          <a href="mailto:lawrence@versadigital.co">lawrence@versadigital.co</a>
+        </div>
+        <div class="footer-links">
+          <a href="https://www.instagram.com/versadigitalhq/" target="_blank" rel="noopener">Instagram</a>
+          <a href="https://www.linkedin.com/in/lawrence-s-b6b7aa213/" target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+      </div>
+      <div class="footer-copy">&copy; 2026 Versa Digital HQ</div>
+    </div>
+  </footer>
+
+  <script>
+    // ── Scroll-shrink nav ──
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+
+    // ── Mobile hamburger ──
+    const hamburger = document.getElementById('hamburger');
+    const mobileNav = document.getElementById('mobileNav');
+    const closeNav  = document.getElementById('closeNav');
+
+    hamburger.addEventListener('click', () => { mobileNav.classList.add('open'); document.body.style.overflow = 'hidden'; });
+    closeNav.addEventListener('click',  closeMobile);
+
+    document.querySelectorAll('#mobileNav .mob-link').forEach(a => {
+      a.addEventListener('click', closeMobile);
+    });
+
+    function closeMobile() { mobileNav.classList.remove('open'); document.body.style.overflow = ''; }
+
+    // ── Fade-up on scroll ──
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+    // ── FAQ accordion ──
+    document.querySelectorAll('.faq-question').forEach(q => {
+      q.addEventListener('click', () => {
+        const item   = q.parentElement;
+        const answer = item.querySelector('.faq-answer');
+        const isOpen = item.classList.contains('open');
+        // Close all
+        document.querySelectorAll('.faq-item').forEach(i => {
+          i.classList.remove('open');
+          i.querySelector('.faq-answer').style.maxHeight = '0';
+        });
+        // Open clicked if it was closed
+        if (!isOpen) {
+          item.classList.add('open');
+          answer.style.maxHeight = answer.scrollHeight + 'px';
+        }
+      });
+    });
+
+    // ── Smooth scroll for nav links ──
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          const offset = nav.offsetHeight + 16;
+          window.scrollTo({ top: target.offsetTop - offset, behavior: 'smooth' });
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
