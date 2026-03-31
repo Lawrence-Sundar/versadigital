@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Founding Clinic Partnership — Versa Digital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0A0A0A;
+      --gold:     #C9A84C;
+      --text:     #E8E8E8;
+      --muted:    #888888;
+      --border:   #1A1A1A;
+      --gold-bg:  rgba(201,168,76,0.10);
+      --gold-line:rgba(201,168,76,0.30);
+    }
+
+    html, body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 10.5pt;
+      line-height: 1.75;
+    }
+
+    /* ─── HEADER ─── */
+    .doc-header {
+      padding: 0.32in 1in 0.18in;
+      background: var(--bg);
+    }
+    .doc-header-top {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 0.1in;
+    }
+    .brand-wordmark {
+      font-family: 'Inter', sans-serif;
+      font-size: 8.5pt;
+      font-weight: 600;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .doc-type-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 7.5pt;
+      font-weight: 400;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .doc-header-rule {
+      height: 1px;
+      background: linear-gradient(to right, var(--gold) 55%, transparent);
+    }
+
+    /* ─── COVER PAGE ─── */
+    .cover {
+      min-height: calc(100vh - 0.9in);
+      padding: 0.7in 1in 0.7in;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+    }
+    .cover-eyebrow {
+      font-family: 'Inter', sans-serif;
+      font-size: 8pt;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.45in;
+    }
+    .cover-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 62pt;
+      font-weight: 300;
+      color: var(--gold);
+      line-height: 0.9;
+      letter-spacing: -0.01em;
+      margin-bottom: 0.3in;
+    }
+    .cover-subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 16pt;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--text);
+      opacity: 0.75;
+      max-width: 5in;
+      line-height: 1.45;
+    }
+    .cover-bottom-accent {
+      position: absolute;
+      bottom: 0.7in;
+      left: 1in;
+      right: 1in;
+      height: 1px;
+      background: linear-gradient(to right, var(--gold) 30%, transparent);
+      opacity: 0.35;
+    }
+
+    /* ─── BODY ─── */
+    .doc-body {
+      padding: 0.45in 1in 0.5in;
+    }
+    section {
+      margin-bottom: 0.42in;
+      page-break-inside: avoid;
+    }
+    .section-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 0.14in;
+      margin-bottom: 0.1in;
+    }
+    .sec-num {
+      font-size: 7.5pt;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .sec-rule {
+      height: 1px;
+      width: 0.28in;
+      background: var(--gold);
+      opacity: 0.38;
+    }
+    .sec-name {
+      font-size: 7.5pt;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 23pt;
+      font-weight: 400;
+      color: var(--text);
+      line-height: 1.15;
+      margin-bottom: 0.17in;
+      page-break-after: avoid;
+    }
+    p {
+      font-size: 10.5pt;
+      line-height: 1.75;
+      color: var(--text);
+      margin-bottom: 0.12in;
+    }
+    p:last-child { margin-bottom: 0; }
+
+    /* ─── GOLD DASH LIST ─── */
+    ul.gold-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    ul.gold-list li {
+      display: flex;
+      gap: 0.18in;
+      margin-bottom: 0.1in;
+      align-items: flex-start;
+      font-size: 10.5pt;
+      line-height: 1.65;
+    }
+    ul.gold-list li .dash {
+      color: var(--gold);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 14pt;
+      line-height: 1.5;
+      flex-shrink: 0;
+    }
+    .li-strong { font-weight: 500; }
+
+    /* ─── TERMS TABLE ─── */
+    .terms-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 0.1in;
+    }
+    .terms-table td {
+      padding: 0.1in 0.16in;
+      border-bottom: 1px solid var(--border);
+      font-size: 10.5pt;
+      vertical-align: top;
+    }
+    .terms-table td:first-child {
+      color: var(--muted);
+      width: 48%;
+    }
+    .terms-table td:last-child {
+      font-weight: 400;
+      color: var(--text);
+    }
+    .terms-table tr.highlight td {
+      background: var(--gold-bg);
+      color: var(--gold);
+      font-weight: 600;
+      border-top: 1px solid var(--gold-line);
+      border-bottom: 1px solid var(--gold-line);
+    }
+
+    /* ─── CONTACT BLOCK ─── */
+    .contact-block {
+      margin-top: 0.18in;
+      padding: 0.18in 0.22in;
+      border-left: 2px solid var(--gold);
+      background: var(--gold-bg);
+    }
+    .contact-block p {
+      margin-bottom: 0.06in;
+      font-size: 10pt;
+    }
+    .contact-block a {
+      color: var(--gold);
+      text-decoration: none;
+    }
+
+    /* ─── CLOSING LINE ─── */
+    .closing-line {
+      text-align: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 15pt;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--gold);
+      padding: 0.38in 0 0.2in;
+      page-break-inside: avoid;
+    }
+
+    /* ─── FOOTER ─── */
+    .doc-footer {
+      padding: 0.16in 1in 0.32in;
+      text-align: center;
+      font-size: 7.5pt;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      margin-top: 0.5in;
+    }
+
+    /* ─── PRINT ─── */
+    @media print {
+      html, body {
+        background: #0A0A0A !important;
+        color: #E8E8E8 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        color-adjust: exact !important;
+      }
+
+      @page { size: A4; margin: 0; }
+
+      .doc-header {
+        position: fixed;
+        top: 0; left: 0; right: 0;
+        z-index: 9999;
+        background: #0A0A0A !important;
+        padding: 0.28in 1in 0.15in;
+      }
+
+      .doc-footer {
+        position: fixed;
+        bottom: 0; left: 0; right: 0;
+        background: #0A0A0A !important;
+        margin-top: 0;
+        padding: 0.13in 1in 0.22in;
+        border-top: 1px solid #1A1A1A;
+      }
+
+      body {
+        padding-top: 0.88in;
+        padding-bottom: 0.6in;
+      }
+
+      .cover {
+        page-break-after: always;
+        min-height: 100vh;
+      }
+
+      .doc-body { padding-top: 0.28in; }
+
+      section { page-break-inside: avoid; }
+      h2 { page-break-after: avoid; }
+
+      .terms-table tr.highlight td {
+        background: rgba(201,168,76,0.12) !important;
+      }
+      .contact-block {
+        background: rgba(201,168,76,0.10) !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="doc-header">
+    <div class="doc-header-top">
+      <span class="brand-wordmark">VERSA DIGITAL</span>
+      <span class="doc-type-label">Partnership Arrangement</span>
+    </div>
+    <div class="doc-header-rule"></div>
+  </header>
+
+  <div class="cover">
+    <div class="cover-eyebrow">Early Adopter Programme</div>
+    <h1 class="cover-title">Founding Clinic<br>Partnership</h1>
+    <p class="cover-subtitle">An exclusive early-adopter arrangement for independent dental clinics.</p>
+    <div class="cover-bottom-accent"></div>
+  </div>
+
+  <div class="doc-body">
+
+    <section>
+      <div class="section-eyebrow">
+        <span class="sec-num">01</span>
+        <div class="sec-rule"></div>
+        <span class="sec-name">What This Is</span>
+      </div>
+      <h2>A Structured Partnership, Not a Free Trial</h2>
+      <p>We are onboarding a small number of founding clinic partners — independent practices that want to be early adopters of intake automation in exchange for a reduced commercial arrangement. This is not a generic free trial. It is a structured 60-day partnership with clear terms on both sides. We cover the build. You give us the opportunity to demonstrate results.</p>
+    </section>
+
+    <section>
+      <div class="section-eyebrow">
+        <span class="sec-num">02</span>
+        <div class="sec-rule"></div>
+        <span class="sec-name">What You Get</span>
+      </div>
+      <h2>What Is Included</h2>
+      <ul class="gold-list">
+        <li><span class="dash">-</span><span>Full intake automation system built and configured for your clinic</span></li>
+        <li><span class="dash">-</span><span>Setup completed within 5–7 working days of onboarding</span></li>
+        <li><span class="dash">-</span><span>Instant patient confirmation on every enquiry</span></li>
+        <li><span class="dash">-</span><span>New and existing patients handled automatically</span></li>
+        <li><span class="dash">-</span><span><span class="li-strong">Patient dispute protection</span> — every enquiry timestamped and logged, so you have a complete record of exactly what was sent and when</span></li>
+        <li><span class="dash">-</span><span><span class="li-strong">60-day leakage report</span> — at the end of the pilot you receive a full breakdown of every enquiry received, how many arrived after hours, and how quickly each one was responded to. Yours to keep regardless of whether you continue</span></li>
+        <li><span class="dash">-</span><span>60 days of active monitoring and maintenance included</span></li>
+        <li><span class="dash">-</span><span>Direct access to Lawrence throughout the partnership</span></li>
+      </ul>
+    </section>
+
+    <section>
+      <div class="section-eyebrow">
+        <span class="sec-num">03</span>
+        <div class="sec-rule"></div>
+        <span class="sec-name">What We Ask</span>
+      </div>
+      <h2>What We Ask in Return</h2>
+      <ul class="gold-list">
+        <li><span class="dash">-</span><span>60 days to run the system live at your clinic</span></li>
+        <li><span class="dash">-</span><span>A short written testimonial at the end of the 60 days if you are satisfied with the results</span></li>
+        <li><span class="dash">-</span><span>Permission to reference your clinic as a case study — anonymised if preferred</span></li>
+      </ul>
+    </section>
+
+    <section>
+      <div class="section-eyebrow">
+        <span class="sec-num">04</span>
+        <div class="sec-rule"></div>
+        <span class="sec-name">The Terms</span>
+      </div>
+      <h2>Terms at a Glance</h2>
+      <table class="terms-table">
+        <tbody>
+          <tr>
+            <td>Setup fee</td>
+            <td>Waived entirely</td>
+          </tr>
+          <tr>
+            <td>First 60 days monitoring</td>
+            <td>Waived entirely</td>
+          </tr>
+          <tr>
+            <td>After 60 days</td>
+            <td>£150/month if you choose to continue</td>
+          </tr>
+          <tr>
+            <td>Obligation to continue</td>
+            <td>None — clean exit after 60 days if preferred</td>
+          </tr>
+          <tr>
+            <td>Testimonial required</td>
+            <td>Yes — short written statement only</td>
+          </tr>
+          <tr>
+            <td>Case study anonymity</td>
+            <td>Optional — clinic name can be withheld</td>
+          </tr>
+          <tr class="highlight">
+            <td>Availability</td>
+            <td>2 founding partners only</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <div class="section-eyebrow">
+        <span class="sec-num">05</span>
+        <div class="sec-rule"></div>
+        <span class="sec-name">After 60 Days</span>
+      </div>
+      <h2>What Happens at the End</h2>
+      <p>At the end of the 60 day period we will have a short review call. If the system has delivered value and you want to continue, you move to standard monthly monitoring at £150/month. If it has not delivered what we promised, you walk away. No invoice, no obligation. We keep the case study either way. That is all we ask.</p>
+    </section>
+
+    <section>
+      <div class="section-eyebrow">
+        <span class="sec-num">06</span>
+        <div class="sec-rule"></div>
+        <span class="sec-name">Data &amp; Privacy</span>
+      </div>
+      <h2>GDPR Compliance</h2>
+      <p>All patient enquiry data processed through this system is handled in compliance with UK GDPR. No patient data is stored beyond what is required for enquiry logging. Data is processed through UK-based infrastructure and is never shared with third parties. Full compliance documentation available on request.</p>
+    </section>
+
+    <section>
+      <div class="section-eyebrow">
+        <span class="sec-num">07</span>
+        <div class="sec-rule"></div>
+        <span class="sec-name">Next Step</span>
+      </div>
+      <h2>How to Explore This Further</h2>
+      <p>If this sounds like something worth exploring, the next step is a free 20 minute call. We will assess your current intake setup, confirm the system is a fit for your clinic, and agree a start date. No slides. No pitch deck. Just a straight conversation.</p>
+      <div class="contact-block">
+        <p>Book a call: <a href="https://calendly.com/lawrence-versadigital/new-meeting">calendly.com/lawrence-versadigital/new-meeting</a></p>
+        <p>Email: <a href="mailto:lawrence@versadigital.co">lawrence@versadigital.co</a></p>
+      </div>
+    </section>
+
+    <div class="closing-line">
+      "Two spots. Independent clinics only. First come, first served."
+    </div>
+
+  </div>
+
+  <footer class="doc-footer">
+    versadigital.co &nbsp;&nbsp;|&nbsp;&nbsp; lawrence@versadigital.co &nbsp;&nbsp;|&nbsp;&nbsp; Confidential
+  </footer>
+
+</body>
+</html>
