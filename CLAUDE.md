@@ -30,6 +30,17 @@
 - **`flex-direction:column` + `flex:1` on card description text** — when two pricing/feature cards have different description lengths, setting `flex:1` on the `.pricing-desc` paragraph pushes the CTA button to the bottom of both cards regardless of content height. Requires `display:flex; flex-direction:column` on the card itself
 - **Comment block as `old_string` anchor for section insertion** — when inserting new HTML sections before an existing section, use `<!-- SECTION NAME -->` as the `old_string`. Replace it with `[new sections]\n\n  <!-- SECTION NAME -->`. This is unambiguous, requires no surrounding context lines, and survives reformatting
 
+### Responsive Video Embed Pattern (Loom, YouTube, Vimeo)
+- **`padding-bottom: 62.5%` approximates Loom's aspect ratio with chrome** — pure 16:9 would be 56.25%, but Loom's share-embed player adds ~6% of height for its controls bar. 62.5% accommodates the chrome without cropping. Use 56.25% for YouTube/Vimeo embeds (they size the chrome inside the 16:9 box)
+- **Standard responsive video container pattern:**
+  ```css
+  .embed { position: relative; padding-bottom: 62.5%; height: 0; overflow: hidden; }
+  .embed iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+  ```
+  Works across all viewport widths, maintains aspect ratio, iframe fills the box. Wrap in a max-width container if the page has a wider content area than the video should span
+- **Two sequential dark sections need a visible separator** — when inserting a new dark section directly above another dark section, the page blurs into one undifferentiated block. Solution: `border-top: 1px solid var(--border-dark)` on the second section. Alternation or a thin hairline restores visual hierarchy
+- **Scroll anchor for secondary CTA** — when a video section offers "prefer to explore yourself?" as a secondary path, link to the next section by its ID (`href="#narrativeHeader"`). The site's existing smooth-scroll handler picks it up. Do not build a separate JS scroller — reuse the existing one
+
 ## Builds Log
 
 ### 2026-03-26 — versadigital.co pilot offer + pricing + hero CTA
@@ -37,3 +48,9 @@
 - **Key pattern used:** Two-button hero (flex wrapper + `.btn-outline` ghost secondary); new dark/light section pair inserted mid-page to maintain alternation; `flex:1` on card descriptions to bottom-align CTAs
 - **Reuse potential:** Yes — two-button hero pattern applies any time the primary offer changes and a secondary demo/info CTA is needed; pricing card pattern applies to any two-tier offering
 - **Lessons:** Read the full HTML structure before inserting sections — knowing the current alternation sequence prevents colour collisions. For section insertion, always target the `<!-- COMMENT -->` of the next existing section as the `old_string` anchor; it is uniquely matchable with no risk of false positives
+
+### 2026-04-14 — Loom walkthrough embed at top of /demo
+- **Problem solved:** Demo page previously led with the narrative "It's 9:47pm..." interactive walkthrough. After recording the 2-minute Loom, it needed to lead with the video (low-friction primary) and keep the interactive demo as a secondary explore-yourself option.
+- **Key pattern used:** New `#loomWalkthrough` dark section inserted above existing `#narrativeHeader` via HTML comment anchor. Responsive 62.5% padding-bottom aspect wrapper. `narrativeHeader` updated from "Live Demo" to "Interactive Demo" label and padding reduced so it reads as secondary to the video above. Scroll anchor link from Loom section to narrative section for secondary CTA. Both sections dark — added `border-top` hairline between them to preserve hierarchy.
+- **Reuse potential:** Yes — the responsive video embed pattern is reusable anywhere a Loom/YouTube/Vimeo needs to land above existing content. Comment-anchor section insertion continues to be the safest edit pattern for this single-file site.
+- **Lessons:** Two dark sections adjacent need a separator or they blur into one block — a 1px border is enough. Loom embed URL pattern is `loom.com/embed/{id}` (for iframes) vs `loom.com/share/{id}` (for email/DM links) — both needed from the same ID for different channels.
