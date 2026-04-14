@@ -146,11 +146,62 @@
     }
     .btn-ghost:hover { background: var(--gold-dim); }
 
+    /* ── LOOM WALKTHROUGH ── */
+    #loomWalkthrough {
+      background: var(--dark);
+      padding: calc(var(--nav-h) + 80px) 0 80px;
+      text-align: center;
+    }
+    #loomWalkthrough .wrap { max-width: 900px; }
+    .loom-headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 300;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      margin-bottom: 16px;
+      color: var(--text-dark);
+    }
+    .loom-sub {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 40px;
+    }
+    .loom-embed {
+      position: relative;
+      padding-bottom: 62.5%;
+      height: 0;
+      border: 1px solid var(--border-dark);
+      background: #000;
+      margin-bottom: 32px;
+      overflow: hidden;
+    }
+    .loom-embed iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      border: 0;
+    }
+    .loom-below {
+      font-size: 14px;
+      color: var(--muted-light);
+      margin-top: 32px;
+    }
+    .loom-below a {
+      color: var(--gold);
+      border-bottom: 1px solid rgba(201,168,76,0.35);
+      padding-bottom: 1px;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .loom-below a:hover { color: var(--gold-hover); border-color: var(--gold); }
+
     /* ── NARRATIVE HEADER ── */
     #narrativeHeader {
       background: var(--dark);
-      padding: calc(var(--nav-h) + 100px) 0 100px;
+      padding: 60px 0 100px;
       text-align: center;
+      border-top: 1px solid var(--border-dark);
     }
     .narrative-headline {
       font-family: 'Cormorant Garamond', serif;
@@ -915,10 +966,23 @@
     </div>
   </nav>
 
+  <!-- ── LOOM WALKTHROUGH ── -->
+  <section id="loomWalkthrough">
+    <div class="wrap">
+      <span class="section-label fade-up">Video Walkthrough</span>
+      <h1 class="loom-headline fade-up delay-1">See the system in two minutes.</h1>
+      <p class="loom-sub fade-up delay-2">Quick walkthrough of what your clinic gets when we build this for you.</p>
+      <div class="loom-embed fade-up delay-3">
+        <iframe src="https://www.loom.com/embed/eb75cb3c40bf467ab459d17864e04bdb" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen title="Versa Intake walkthrough"></iframe>
+      </div>
+      <p class="loom-below fade-up delay-4">Prefer to explore it yourself? <a href="#narrativeHeader">Scroll down for the interactive demo</a>.</p>
+    </div>
+  </section>
+
   <!-- ── NARRATIVE HEADER ── -->
   <section id="narrativeHeader">
     <div class="wrap">
-      <span class="section-label fade-up">Live Demo</span>
+      <span class="section-label fade-up">Interactive Demo</span>
       <h1 class="narrative-headline fade-up delay-1">It's 9:47pm. A patient just submitted an enquiry.</h1>
       <p class="narrative-sub fade-up delay-2">What happens next depends entirely on your clinic's setup.</p>
       <div class="gold-rule fade-up delay-3"></div>
